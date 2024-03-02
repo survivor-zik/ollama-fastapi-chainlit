@@ -24,6 +24,14 @@ I have used a custom LLM from [Gemma-7b-it-GGUF](https://huggingface.co/mlabonne
 Invoke-WebRequest -Uri "https://huggingface.co/mlabonne/gemma-7b-it-GGUF/resolve/main/gemma-7b-it.Q5_K_M.gguf" -OutFile "./model/llm/gemma-7b-it.Q5_K_M.gguf"
 ```
 
+## Pre-Requisites 
+
+1. Use the Modelfile.txt to add into Ollama list of models.
+2. Run the following commands in the terminal.
+   ```
+   ollama create gemma-updated -f ./models/modelfile.txt
+   ```
+
 ## Run Apps
 1. For FastAPI
    ```
