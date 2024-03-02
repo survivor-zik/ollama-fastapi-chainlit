@@ -30,7 +30,7 @@ async def on_chat_start():
 
     file = files[0]
     print(file)
-    read_pdf_chain(file,file.name)
+    read_pdf_chain(file, file.name)
     msg = cl.Message(content=f"File processed `{file.name}`...")
     await msg.send()
     message_history = ChatMessageHistory()
@@ -63,19 +63,5 @@ async def main(message: cl.Message):
     source_documents = res["source_documents"]  # type: List[Document]
 
     text_elements = []  # type: List[cl.Text]
-
-    if source_documents:
-        for source_idx, source_doc in enumerate(source_documents):
-            source_name = f"source_{source_idx}"
-            # Create the text element referenced in the message
-            text_elements.append(
-                cl.Text(content=source_doc.page_content, name=source_name)
-            )
-        source_names = [text_el.name for text_el in text_elements]
-
-        if source_names:
-            answer += f"\nSources: {', '.join(source_names)}"
-        else:
-            answer += "\nNo sources found"
 
     await cl.Message(content=answer, elements=text_elements).send()

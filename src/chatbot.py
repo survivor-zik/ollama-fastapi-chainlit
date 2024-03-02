@@ -40,8 +40,9 @@ class Chatbot:
             # verbose=True,
         )
         self.retreiver = get_vector_store("documents").as_retriever(search_type='mmr',
-                                                                    search_kwargs={'k': 5, 'fetch_k': 50})
-        # self.retreiver = get_vector_store("documents").as_retriever()
+                                                                    search_kwargs={'k': 2, 'fetch_k': 10})
+        # self.retreiver = get_vector_store("documents").as_retriever(search_type="similarity_score_threshold",
+        #                                                             search_kwargs={"score_threshold": 0.6})
         # self.memory = ConversationSummaryMemory(llm=self.llm, return_messages=False, input_key='input',
         #                                         memory_key='chat_history')
         message_history = ChatMessageHistory()
@@ -54,7 +55,7 @@ class Chatbot:
         )
         self.lcel = ({"question": itemgetter("question"),
                       "context": itemgetter('context'),
-                      "chat_history":RunnableLambda(self.memory.load_memory_variables),
+                      "chat_history": RunnableLambda(self.memory.load_memory_variables),
                       }
                      | self.prompt
                      | self.llm
