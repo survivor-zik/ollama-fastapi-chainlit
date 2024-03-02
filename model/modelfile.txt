@@ -1,0 +1,13 @@
+FROM ./llm/gemma-7b-it.Q5_K_M-v2.gguf
+
+TEMPLATE="""<start_of_turn>user
+{prompt}
+<end_of_turn>
+<start_of_turn>model"""
+
+PARAMETER temperature 0.0
+
+SYSTEM """"""
+
+PARAMETER stop <start_of_turn>
+PARAMETER stop <end_of_turn>
