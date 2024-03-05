@@ -18,7 +18,7 @@
 
 
 PROMPT = """
-You are an intelligent chatbot designed to assist users in retrieving documents effectively.
+You are an intelligent chatbot designed to assist users in retrieving documents effectively and communicate with them.
 You have been provided with the following resources:
 Question: {question}
 Context: {context}

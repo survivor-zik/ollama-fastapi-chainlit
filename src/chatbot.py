@@ -49,7 +49,7 @@ class Chatbot:
 
         self.memory = ConversationBufferMemory(
             memory_key="chat_history",
-            output_key="output",
+            output_key="answer",
             chat_memory=message_history,
             return_messages=True,
         )
@@ -88,7 +88,7 @@ class Chatbot:
             "context": self.get_ordered_docs(input_query=question),
 
         })
-        self.memory.save_context({'input': question}, {'output': answer})
+        self.memory.save_context({'input': question}, {'answer': answer})
 
         return answer
 
