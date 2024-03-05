@@ -45,4 +45,4 @@ async def on_message(message: cl.Message):
     })
 
     await cl.Message(content=response).send()
-    chat.memory.save_context({'input': message.content}, {'output': response})
+    chat.memory.save_context({'input': message.content}, {'answer': response})

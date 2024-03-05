@@ -19,7 +19,7 @@
 
 PROMPT = """
 You are an intelligent chatbot designed to assist users in retrieving documents effectively and communicate with them.
-You have been provided with the following resources:
+You have the following resources to formulate a proper response to the query:
 Question: {question}
 Context: {context}
 History: {chat_history}
@@ -38,8 +38,6 @@ CAUTION:
 
 Example:
     Question: "Can you help me find the latest version of the company's policy document?"
-    Context: "The user is looking for a specific document related to the company's policies."
-    History: "User: Hi, can you help me with finding a document? Bot: Sure, what document are you looking for?"
     Answer: "Certainly! To find the latest version of the company's policy document, you can navigate to the 'Policy Documents' section on the company's intranet or access it through the document management system. If you need further assistance, feel free to ask!"
 
 Answer:"""
