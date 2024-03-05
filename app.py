@@ -1,11 +1,9 @@
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_community.chat_models import ChatOllama
 from langchain.docstore.document import Document
 import chainlit as cl
 from typing import List
-from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from src.data_parse import read_pdf_chain
 from src.chatbot import Chatbot
@@ -33,24 +31,9 @@ async def on_chat_start():
     read_pdf_chain(file, file.name)
     msg = cl.Message(content=f"File processed `{file.name}`...")
     await msg.send()
-    message_history = ChatMessageHistory()
-
-    memory = ConversationBufferMemory(
-        memory_key="chat_history",
-        output_key="answer",
-        chat_memory=message_history,
-        return_messages=True,
-    )
     chat = Chatbot()
-    chain = ConversationalRetrievalChain.from_llm(
-        llm=chat.llm,
-        chain_type="stuff",
-        retriever=chat.retreiver,
-        memory=memory,
-        condense_question_prompt=PromptTemplate.from_template(CHAIN_PROMPT),
-        return_source_documents=True,
-    )
-    cl.user_session.set("chain", chain)
+
+    cl.user_session.set("chain", chat.chain)
 
 
 @cl.on_message
@@ -58,7 +41,7 @@ async def main(message: cl.Message):
     chain = cl.user_session.get("chain")  # type: ConversationalRetrievalChain
     cb = cl.AsyncLangchainCallbackHandler()
 
-    res = await chain.ainvoke(message.content, callbacks=[cb])
+    res = await chain.ainvoke({"question": message.content}, callbacks=[cb])
     answer = res["answer"]
     source_documents = res["source_documents"]  # type: List[Document]
 

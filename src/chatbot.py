@@ -4,7 +4,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory, ChatMessageHistory
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnableLambda
-from src.prompt import PROMPT
+from src.prompt import PROMPT, CHAIN_PROMPT
 from langchain_core.output_parsers import StrOutputParser
 from operator import itemgetter
 from src.utils import get_vector_store, stringify_searched_docs, return_splitter, format_docs
@@ -29,11 +29,11 @@ class Chatbot:
         self.splitter = return_splitter(max_tokens, PROMPT)
         self.reorder = LongContextReorder()
         self.llm = ChatOllama(
-            model="gemma-updated",
+            model="gemmanew",
             temperature=0.0,
             num_ctx=max_tokens,
-            top_p=0.9,
-            top_k=4,
+            # top_p=0.9,
+            # top_k=4,
             num_gpu=29,
             repeat_penalty=1.0,
             # callback_manager=callback_manager,
@@ -72,9 +72,15 @@ class Chatbot:
              "chat_history": RunnableLambda(self.memory.load_memory_variables)}
         ).assign(answer=self.lcel1)
 
-        self.chain = ConversationalRetrievalChain.from_llm(llm=self.llm, retriever=self.retreiver,
-                                                           condense_question_prompt=self.prompt, verbose=True,
-                                                           memory=self.memory)
+        self.chain = ConversationalRetrievalChain.from_llm(
+            llm=self.llm,
+            chain_type="refine",
+            retriever=self.retreiver,
+            memory=self.memory,
+            condense_question_prompt=PromptTemplate.from_template(CHAIN_PROMPT),
+            return_source_documents=True,
+            verbose=True,
+        )
 
     def chat(self, question: str) -> str:
         answer = self.lcel.invoke({
