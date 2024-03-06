@@ -1,13 +1,9 @@
 from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
-from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain.docstore.document import Document
 import chainlit as cl
 from typing import List
-from langchain_core.prompts import PromptTemplate
 from src.data_parse import read_pdf_chain
 from src.chatbot import Chatbot
-from src.prompt import CHAIN_PROMPT
 
 
 @cl.on_chat_start

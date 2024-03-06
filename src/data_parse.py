@@ -36,7 +36,6 @@ def read_pdf_chain(file, filename):
         pdf_text = page.extract_text()
 
         texts = transform([Document(pdf_text, metadata={"source": f"{filename}"})])
-        print(texts)
         vector_store.add_documents(texts)
 
     vector_store.persist()

@@ -55,7 +55,7 @@ class Chatbot:
         )
         self.lcel = ({"question": itemgetter("question"),
                       "context": itemgetter('context'),
-                      "chat_history": RunnableLambda(self.memory.load_memory_variables),
+                      # "chat_history": RunnableLambda(self.memory.load_memory_variables),
                       }
                      | self.prompt
                      | self.llm
@@ -88,7 +88,7 @@ class Chatbot:
             "context": self.get_ordered_docs(input_query=question),
 
         })
-        self.memory.save_context({'input': question}, {'answer': answer})
+        # self.memory.save_context({'input': question}, {'answer': answer})
 
         return answer
 
@@ -96,7 +96,6 @@ class Chatbot:
         docs = self.retreiver.get_relevant_documents(query=input_query)
         docs = self.splitter.transform_documents(docs)
         docs = self.reorder.transform_documents(docs)
-        print(docs)
         doc_str = stringify_searched_docs(docs=docs)
-        # print(doc_str)
+        print(doc_str)
         return docs

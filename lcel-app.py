@@ -1,4 +1,5 @@
 import chainlit as cl
+from langchain_core.runnables import RunnableConfig
 from src.chatbot import Chatbot
 from src.data_parse import read_pdf_chain
 
@@ -36,13 +37,13 @@ async def on_message(message: cl.Message):
     llm = cl.user_session.get("llm")
     chat = cl.user_session.get("chat")
     mess = cl.Message(content="")
-    print(message.content)
-    context = await cl.make_async(chat.get_ordered_docs)(input_query=message.content)
-    response = await llm.ainvoke({
+    response = ""
+    context = await cl.make_async(chat.get_ordered_docs)(input_query = message.content)
+    async for chunk in llm.astream({
         "question": message.content,
-        "context": context,
-        "chat_history": await cl.make_async(chat.memory.load_memory_variables)('chat_history')
-    })
+        "context": context
 
-    await cl.Message(content=response).send()
-    chat.memory.save_context({'input': message.content}, {'answer': response})
+    }, config=RunnableConfig(callbacks=[cl.LangchainCallbackHandler(stream_final_answer=True)])):
+        await mess.stream_token(chunk)
+
+    await mess.send()
