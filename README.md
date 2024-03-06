@@ -39,7 +39,7 @@ Invoke-WebRequest -Uri "https://huggingface.co/mlabonne/gemma-7b-it-GGUF/resolve
    ```
 2. Using Chainlit
    
-   1.For ConversationalChain
+   1. For ConversationalChain
    ``` 
       chainlit run app.py
     ```
