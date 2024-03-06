@@ -47,7 +47,8 @@ CAUTION:
     - Responses should be in a friendly and approachable tone.
     - Be concise yet comprehensive in your explanations.
     - Greetings should be simple and welcoming.
-    - You should ignore the History if it is not relevant to the Question and answer the required question from the context. 
+    - You should ignore the History if it is not relevant to the Question and
+        answer the required question from the context. 
     - You should only output the answer.
 """
 
@@ -66,4 +67,4 @@ CAUTION:
     Greeting shall be in simple manner and style.
 Question: {question}
 History:{chat_history}
-Answer:"""
+"""

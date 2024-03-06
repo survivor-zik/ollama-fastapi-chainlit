@@ -41,8 +41,7 @@ class Chatbot:
         )
         self.retreiver = get_vector_store("documents").as_retriever(search_type='mmr',
                                                                     search_kwargs={'k': 2, 'fetch_k': 10})
-        # self.retreiver = get_vector_store("documents").as_retriever(search_type="similarity_score_threshold",
-        #                                                             search_kwargs={"score_threshold": 0.6})
+        self.retreiver1 = get_vector_store("documents").as_retriever()
         # self.memory = ConversationSummaryMemory(llm=self.llm, return_messages=False, input_key='input',
         #                                         memory_key='chat_history')
         message_history = ChatMessageHistory()
@@ -75,7 +74,7 @@ class Chatbot:
         self.chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
             chain_type="refine",
-            retriever=self.retreiver,
+            retriever=self.retreiver1,
             memory=self.memory,
             condense_question_prompt=PromptTemplate.from_template(CHAIN_PROMPT),
             return_source_documents=True,
